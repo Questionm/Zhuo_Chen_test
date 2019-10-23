@@ -6,14 +6,12 @@
 class Solution(object):
     def compareVersion(self, version1, version2):
         
-        #param version1
-        @param version2
-        @return
-        """
-        :type version1: str
-        :type version2: str
-        :rtype: int
-        """
+        # @param {string} version1
+        # @param {string} version2
+        # @return {int}
+        
+        
+      
 
 #test
 
