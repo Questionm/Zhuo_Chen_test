@@ -1,8 +1,8 @@
-# Zhuo_Chen_test
-Ormuco Python Test Solutions
 
 
 This page records my understanding also solutions regarding three coding questions as list below:
+
+
 
 Question A
 
