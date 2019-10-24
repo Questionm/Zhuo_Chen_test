@@ -4,7 +4,7 @@
 #-------------------------------
 # The core idea for this cache is:
 # 1. can quickly pull/push data : the near real-time requirement
-# 2. geo-near-quick-fetch : frequent data get
+# 2. geo-quicknear-fetch : frequent data get
 # 3. time expiration : release space
 #-------------------------------
 
@@ -14,8 +14,8 @@
 # Design it by:
 # 1. key-value data structure;
 # 2. Regarding time expiration:
-#    after every set/get operation, clean the overtime and earliest key;
-#    (record each key's timeframe);
+#    after every set/get operation, clean the overtime and earliest key 
+#    (based on record each key's timeframe)  
 ##
 # 3. geo idea!!!
 #    listen to the host 
