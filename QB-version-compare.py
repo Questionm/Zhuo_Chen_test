@@ -49,5 +49,9 @@ class Solution(object):
 #'1.15' > '1.5'
 
 
+
 #extreme case
-#'2..............333', '23............223.32'
+#'2..............333', '23............223.32'   should not be considered into comparison
+
+
+
