@@ -11,13 +11,15 @@
 
 
 #-------------------------------
-# Design idea is:
+# Design it by:
 # 1. key-value data structure;
 # 2. Regarding time expiration:
-#    record each key's timeframe; clean the overtime and earliest key after every set/get operation
+#    after every set/get operation, clean the overtime and earliest key;
+#    (record each key's timeframe);
 ##
 # 3. geo idea!!!
-#    listen to the near host by sending pin request. 
+#    listen to the host 
+#    checking the nearest one by sending pin request. 
 #-------------------------------
 
 
