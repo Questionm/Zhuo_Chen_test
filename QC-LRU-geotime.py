@@ -163,10 +163,4 @@ for i in subnet.hosts():
     
                 
                 
-  
-
-#-------------------------------
-# The idea for this question is do a network cache with geo-search-time-expiration characteristic
-#-------------------------------
-
               
