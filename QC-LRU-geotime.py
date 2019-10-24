@@ -29,83 +29,68 @@
 ## The nearest availability can be filtered by ping listening (light while consistent)   
 
 
-
-import time
-import socket
 import os
-import random
-import select
-from ICMP import ICMPPacket, ext_icmp_header
-
-from collections import OrderedDict
+import socket
+import struct
+import array
 
 
-def single_ping_request(s, addr=None):
-
-    # Random Packet Id
-    pkt_id = random.randrange(10000,65000)
+class Pinger(object):
     
-    # Create ICMP Packet
-    packet = ICMPPacket(icmp_id=pkt_id).raw
+   
+    def __init__(self,timeout=3):
+        self.timeout = timeout
+        self.__id = os.getpid()
+        self.__data = struct.pack('h',1)
 
-    # Send ICMP Packet
-    while packet:
-        sent = s.sendto(packet, (addr, 1))
-        packet = packet[sent:]
-
-    return pkt_id
-
-
-def catch_ping_reply(s, ID, time_sent, timeout=1):
-
-    while True:
-        starting_time = time.time()     # Record Starting Time
-
-        # to handle timeout function of socket
-        process = select.select([s], [], [], timeout)
         
-        # check if timeout
-        if process[0] == []:
-            return
-
-        # receive packet
-        rec_packet, addr = s.recvfrom(1024)
-
-        # extract icmp packet from received packet 
-        icmp = rec_packet[20:28]
-
-        # extract information from icmp packet
-        _id = ext_icmp_header(icmp)['id']
-
-        # check identification
-        if _id == ID:
-            return ext_icmp_header(icmp)
-    return
+    @property
+    def __icmpSocket(self):
+        icmp = socket.getprotobyname("icmp")
+        sock = socket.socket(socket.AF_INET,socket.SOCK_RAW,icmp)
+        return sock
 
 
-def main():
-    # create socket
-    s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
+    def __doCksum(self,packet)
+        words = array.array('h',packet)
+        sum = 0
+        for word in words:
+            sum += (word & 0xffff)
+        sum = (sum >> 16) + (sum & 0xffff)
+        sum += (sum >> 16) 
+        return (~sum) & 0xffff
+
     
-    # take Input
-    addr = raw_input("[+] Enter Domain Name : ") or "www.google.com"
-    
-    # Request sent
-    ID = single_ping_request(s, addr)
-
-    # Catch Reply
-    reply = catch_ping_reply(s, ID, time.time())
-
-    if reply:
-        print reply
-
-    # close socket
-    s.close()
-    return
+    @property
+    def __icmpPacket(self):                                                    # construct icmp packet
+        header = struct.pack('bbHHh',8,0,0,self.__id,0)
+        packet = header + self.__data
+        cksum = self.__doCksum(packet)
+        header = struct.pack('bbHHh',8,0,cksum,self.__id,0)
+        return header + self.__data 
 
 
-if __name__=='__main__':
-    main() 
+    def sendPing(self,target_host):
+        
+        try:
+            socket.gethostbyname(target_host)
+
+            sock = self.__icmpSocket
+            sock.settimeout(self.timeout)
+
+            packet = self.__icmpPacket
+
+            sock.sendto(packet,(target_host,1))                                # send the icmp packet to the host 
+
+            ac_ip = sock.recvfrom(1024)[1][0]
+            print '[+] %s active'%(ac_ip)
+            return ac_ip
+        except Exception,e:
+            sock.close()
+
+            
+# s = Pinger()
+# s.sendPing('192.168.1.103')
 
 
 
@@ -166,7 +151,16 @@ class LRUCacheDict(object):
                 
 
                
-                
+# test 
+
+import ipaddress
+
+subnet = ipaddress.ip_network('192.168.1.0/24', strict=False)
+for i in subnet.hosts():
+    i = str(i)
+    i = Pinger().sendPing(i)
+    print (LRUCacheDict(index(subnet.hosts(i),i))
+    
                 
                 
   
