@@ -11,7 +11,7 @@
 
 
 #-------------------------------
-# The design idea is:
+# Design idea is:
 # 1. key-value data structure;
 # 2. Regarding time expiration:
 #    record each key's timeframe; clean the overtime and earliest key after every set/get operation
