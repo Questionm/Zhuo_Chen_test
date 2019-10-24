@@ -2,6 +2,27 @@
 
 
 #-------------------------------
+# The idea for this question is do a network cache with geo-search-time-expiration characteristic
+
+# There are many different ways to achieve this goal,
+#
+# Most standard one would be liked: design a well data structure LRU cache 
+#-------------------------------
+
+
+
+#-------------------------------
+#  My idea for achieving this goal is:
+# 
+# The core idea for this cache is:
+# 1. can quickly pull/push data : the near real-time requirement
+# 2. geo-near-fetch :close data get
+# 3. time expiration : release space
+#-------------------------------
+
+
+
+#-------------------------------
 # The core idea for this cache is:
 # 1. can quickly pull/push data : the near real-time requirement
 # 2. geo-near-fetch :close data get
