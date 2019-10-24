@@ -4,7 +4,7 @@
 #-------------------------------
 # The core idea for this cache is:
 # 1. can quickly pull/push data : the near real-time requirement
-# 2. geo-quicknear-fetch : frequent data get
+# 2. geo-near-fetch :close data get
 # 3. time expiration : release space
 #-------------------------------
 
@@ -14,7 +14,7 @@
 # Design it by:
 # 1. key-value data structure;
 # 2. Regarding time expiration:
-#    after every set/get operation, clean the overtime and earliest key 
+#    after every set/get operation, clean the overtime and earliest key
 #    (based on recording each key's timeframe)  
 ##
 # 3. geo idea!!!
@@ -24,10 +24,10 @@
 
 
 
+## It is designed by image the network scenario like:
+## The core "-LRU cache-" contain the time control characteristics, while its 'key-value' store the network host information
+##           
 
-#dict容量固定
-#记录每个key的最后一次访问时间与过期时间
-#在每次增加/查询操作时，对dict进行清理，先清除过期的key，然后清除最早访问的key
 
 
 import time
