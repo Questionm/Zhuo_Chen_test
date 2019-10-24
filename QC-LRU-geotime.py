@@ -15,7 +15,7 @@
 # 1. key-value data structure;
 # 2. Regarding time expiration:
 #    after every set/get operation, clean the overtime and earliest key 
-#    (based on record each key's timeframe)  
+#    (based on recording each key's timeframe)  
 ##
 # 3. geo idea!!!
 #    listen to the host 
