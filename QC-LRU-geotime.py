@@ -1,4 +1,4 @@
-# Question C
+#Question C
 
 
 #-------------------------------
@@ -19,7 +19,7 @@
 ##
 # 3. geo idea!!!
 #    listen to the host 
-#    checking the nearest one by sending pin request. 
+#    checking the nearest one by sending ping request. 
 #-------------------------------
 
 
@@ -31,7 +31,85 @@
 
 
 import time
+import socket
+import os
+import random
+import select
+from ICMP import ICMPPacket, ext_icmp_header
+
 from collections import OrderedDict
+
+
+
+def single_ping_request(s, addr=None):
+
+    # Random Packet Id
+    pkt_id = random.randrange(10000,65000)
+    
+    # Create ICMP Packet
+    packet = ICMPPacket(icmp_id=pkt_id).raw
+
+    # Send ICMP Packet
+    while packet:
+        sent = s.sendto(packet, (addr, 1))
+        packet = packet[sent:]
+
+    return pkt_id
+
+
+def catch_ping_reply(s, ID, time_sent, timeout=1):
+
+    while True:
+        starting_time = time.time()     # Record Starting Time
+
+        # to handle timeout function of socket
+        process = select.select([s], [], [], timeout)
+        
+        # check if timeout
+        if process[0] == []:
+            return
+
+        # receive packet
+        rec_packet, addr = s.recvfrom(1024)
+
+        # extract icmp packet from received packet 
+        icmp = rec_packet[20:28]
+
+        # extract information from icmp packet
+        _id = ext_icmp_header(icmp)['id']
+
+        # check identification
+        if _id == ID:
+            return ext_icmp_header(icmp)
+    return
+ 
+
+
+
+def main():
+    # create socket
+    s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
+    
+    # take Input
+    addr = raw_input("[+] Enter Domain Name : ") or "www.google.com"
+    
+    # Request sent
+    ID = single_ping_request(s, addr)
+
+    # Catch Reply
+    reply = catch_ping_reply(s, ID, time.time())
+
+    if reply:
+        print reply
+
+    # close socket
+    s.close()
+    return
+
+if __name__=='__main__':
+    main()
+
+
 
 
 class LRUCacheDict(object):
