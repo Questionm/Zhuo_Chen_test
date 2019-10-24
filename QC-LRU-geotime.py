@@ -1,10 +1,4 @@
-#Question C
-
-
-#-------------------------------
-# The idea for this question is do a network cache with geo-search-time-expiration characteristic
-#-------------------------------
-
+# Question C
 
 
 #-------------------------------
@@ -100,4 +94,10 @@ class LRUCacheDict(object):
                 
                 
                 
-                
+  
+
+#-------------------------------
+# The idea for this question is do a network cache with geo-search-time-expiration characteristic
+#-------------------------------
+
+              
