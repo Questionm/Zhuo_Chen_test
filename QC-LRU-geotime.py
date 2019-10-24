@@ -13,20 +13,20 @@
 #-------------------------------
 # Design it by:
 # 1. key-value data structure;
-# 2. Regarding time expiration:
+
+# 2. geo idea:
+#    check the near ip by sending + gathering ping request
+##
+# 3. Regarding time expiration:
 #    after every set/get operation, clean the overtime and earliest key
 #    (based on recording each key's timeframe)  
-##
-# 3. geo idea!!!
-#    listen to the host 
-#    checking the nearest one by sending ping request. 
 #-------------------------------
 
 
 
-## It is designed by image the network scenario like:
-## The core "-LRU cache-" contain the time control characteristics, while its 'key-value' store the network host information
-##           
+## It is designed by imaging a network scenario like:
+## The core is "-LRU cache-", its 'key-value' used to store network host information, cache contains the time control characteristics
+## The nearest availability can be filtered by ping listening (light while consistent)   
 
 
 
@@ -38,7 +38,6 @@ import select
 from ICMP import ICMPPacket, ext_icmp_header
 
 from collections import OrderedDict
-
 
 
 def single_ping_request(s, addr=None):
@@ -82,8 +81,6 @@ def catch_ping_reply(s, ID, time_sent, timeout=1):
         if _id == ID:
             return ext_icmp_header(icmp)
     return
- 
-
 
 
 def main():
@@ -106,13 +103,14 @@ def main():
     s.close()
     return
 
-if __name__=='__main__':
-    main()
 
+if __name__=='__main__':
+    main() 
 
 
 
 class LRUCacheDict(object):
+    
     def __init__(self, expiration=15*60, maxsize=128):
         self.expiration = expiration
         self.maxsize = maxsize
@@ -144,11 +142,9 @@ class LRUCacheDict(object):
             del self.__access_times[key]
             del self.__expire_times[key]
 
-
             
     def size(self):
         return len(self.__values)
-
  
 
     def clear(self):
@@ -156,19 +152,20 @@ class LRUCacheDict(object):
         self.__access_times.clear()
         self.__expire_times.clear()
 
-        
-        
+               
     def cleanup(self):
         t = int(time.time())
         for key, expire in self.__expire_times.iteritems():
             if expire < t:
                 self.__delitem__(key)
-
                 
         while self.size() > self.maxsize:
             for key in self.__access_times:
                 self.__delitem__(key)
                 break
+                
+
+               
                 
                 
                 
