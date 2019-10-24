@@ -9,6 +9,20 @@
 #-------------------------------
 
 
+
+#-------------------------------
+# The design idea is:
+# 1. key-value data structure;
+# 2. Regarding time expiration:
+#    record each key's timeframe; clean the overtime and earliest key after every set/get operation
+##
+# 3. geo idea!!!
+#    listen to the near host by sending pin request. 
+#-------------------------------
+
+
+
+
 #dict容量固定
 #记录每个key的最后一次访问时间与过期时间
 #在每次增加/查询操作时，对dict进行清理，先清除过期的key，然后清除最早访问的key
