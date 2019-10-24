@@ -1,7 +1,9 @@
 #Question A
 
 
+
 #code
+
 class Solution(object):
   
     # @param {list} line1
@@ -17,7 +19,9 @@ class Solution(object):
         
 
         
-#test        
+        
+#test   
+
 print(Solution().isLineOverlap([1,5], [2,6]))
 True
 
