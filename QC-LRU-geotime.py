@@ -34,6 +34,7 @@ import socket
 import struct
 import array
 
+from collections import OrderedDict
 
 class Pinger(object):
     
